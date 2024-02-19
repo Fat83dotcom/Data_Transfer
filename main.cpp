@@ -23,10 +23,47 @@ using std::getline;
 using std::ios;
 using std::chrono::system_clock;
 using std::chrono::time_point;
-using fmt::format;
 using std::vector;
 using std::for_each;
 
+// Interfaces
+
+class SQLSuplier {
+public:
+    virtual string getSQL(const vector<string> args) = 0;
+protected:
+    SQLSuplier() {}
+    virtual ~SQLSuplier() {}
+private:
+    vector<string> sqlContainer;
+};
+
+class Source {
+private:
+    string config;
+    SQLSuplier *sql;
+public:
+    Source(const string &dbConfig) {
+        config = dbConfig;
+    }
+    virtual ~Source(){}
+};
+
+class DBExecuter {
+private:
+    DataBase *dbOrigin;
+    DataBase *dbDestiny;
+    Source *origin;
+    Source *destiny;
+public:
+    virtual void insert() = 0;
+    virtual void select() = 0;
+    virtual void update() = 0;
+    virtual void delete_() = 0;
+protected:
+    DBExecuter() {}
+    virtual ~DBExecuter() {}
+};
 
 class Error : public exception {
 private:
