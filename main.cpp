@@ -76,6 +76,7 @@ public:
     }
 };
 
+// Concrete Classes
 
 class LogFile {
 private:
@@ -111,20 +112,10 @@ public:
     }
 };
 
-
 class DataBase {
 private:
     pqxx::connection C;
     LogFile *log = new LogFile("LogFileAlgoritmoExtracaoCPP.txt");
-
-    string _queryInserTimeTable(const string &tableName, const vector<string> values){
-        string sql = format(
-            "INSERT INTO tabelas_horarias.\"{}\" (data_hora, umidade, pressao, temp_int, temp_ext)"
-            "VALUES ('{}', {}, {}, {}, {})", tableName.c_str(), values[0].c_str(), values[1].c_str(),
-            values[2].c_str(), values[3].c_str(), values[4].c_str()
-        );
-        return sql;
-    }
     
 
     void _execDB(const string &sql){
@@ -143,52 +134,39 @@ public:
         delete log;
         cout << "DB delete." << endl;
     }
+};
 
-    void insertDataDB(const string currentDate, vector<string>data){
-        try{
-            if (currentDate != "00-00-0"){
-                string sql = this->_queryInserTimeTable(currentDate, data);
-                this->_execDB(sql);
-            }
-        }
-        catch(const exception& e) {
-            this->log->registerLog(e.what());
-        }
+class SQLSupplierDadosEstacao : public SQLSuplier{
+    //origin
+public:
+    string getSQL(const vector<string> args) {
+        string sql = format(
+        "SELECT data_hora, temp_ext, umidade, pressao FROM \"tabelas_horarias\"."
+        "\"{}\" FROM dados_estacao;", args[0]
+    );
+    // Define a quantidade de argumentos que o vector deve ter, para controlar a entrada
+    // e saída de argumentos do format em qualquer situação.
+    if (args.size() == 1){
+        return sql;
+    }
+    return "";
     }
 };
 
-class SQLSuplier {
+class SQLSuplierEstacaoIOT : public SQLSuplier {
+    // Destiny
 public:
-    virtual string getSQL() = 0;
-protected:
-    SQLSuplier() {}
-    virtual ~SQLSuplier() {}
-private:
-    vector<string> sqlContainer;
-};
-
-class DBExecuter {
-private:
-    string config;
-    DataBase *db;
-    SQLSuplier *sql;
-public:
-    virtual void insert(string &sql) = 0;
-    virtual void select(string &sql) = 0;
-    virtual void update(string & sql) = 0;
-    virtual void delete_(string &sql) = 0;
-protected:
-    DBExecuter(string &dbConfig) {
-        config = dbConfig;
+    string getSQL(const vector<string> args){
+        string sql = format(
+            "INSERT INTO \"Core_datasensor\" (date_hour, temperature, humidity, pressure, id_sensor_id)"
+            " VALUES (\'{}\', {}, {}, {}, {});", args[0], args[1], args[2], args[3], args[4]
+        );
+        if (args.size() == 5){
+            return sql;
+        }
+        return "";
     }
-    virtual ~DBExecuter() {}
 };
-
-class SQLSupplierDadosEstacao {
-
-};
-
-
 
 class ExtractDateFromFile {
 private:
@@ -236,20 +214,22 @@ int main(int, char**){
     // cout << extFile->getDates().size() << endl;
     // delete extFile;
 
-    string filepath = "dateSequence.txt";
-    ifstream file;
-    file.open(filepath, ios::in);
-    if (file.is_open()) {
-        cout << "abriu." << endl;
-        string line;
-        while (getline(file, line)) {
-            
-            cout << line << endl;
-        }
-        file.close();
-    }
-    else {
-        cout << "não abriu." << endl;
-    }
+    SQLSupplierDadosEstacao *sqlDadoEsta = new SQLSupplierDadosEstacao();
+    SQLSuplierEstacaoIOT *iot = new SQLSuplierEstacaoIOT();
+    vector<string> arg = {"12-04-2024"};
+    vector<string> arg1 = {"12-04-2024", "deokookde", "kokoko", "dasdasd", "mkmlkm"};
+   
+    string ret = sqlDadoEsta->getSQL(arg);
+    string ret1 = iot->getSQL(arg1);
+    cout << ret << endl;
+    cout << ret1 << endl;
+
+    // string a = "meteção";
+    // fmt::print("meteçao lokca {}", 666);
+    // string teste = format("aqui {} é lokura", a);
+    // cout << teste << endl;
+
+
+    return 0;
     
 }
