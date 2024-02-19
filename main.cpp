@@ -34,12 +34,10 @@ public:
 protected:
     SQLSuplier() {}
     virtual ~SQLSuplier() {}
-private:
-    vector<string> sqlContainer;
 };
 
 class Source {
-private:
+protected:
     string config;
     SQLSuplier *sql;
 public:
@@ -47,9 +45,9 @@ public:
         config = dbConfig;
     }
     virtual ~Source(){}
+    virtual string getConfigDB() = 0;
+    virtual vector<string> getQuery() = 0;
 };
-
-
 
 class Error : public exception {
 private:
