@@ -1,15 +1,18 @@
 #define FMT_HEADER_ONLY
+#include <fmt/format.h>
+#include <fmt/core.h>
 #include <iostream>
 #include <pqxx/pqxx>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <chrono>
-#include <fmt/format.h>
+
 #include "configFile.h"
 
 namespace fs = std::filesystem;
 
+using fmt::format;
 using std::string;
 using std::exception;
 using std::cout;
