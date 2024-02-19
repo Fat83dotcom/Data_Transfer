@@ -49,21 +49,7 @@ public:
     virtual ~Source(){}
 };
 
-class DBExecuter {
-private:
-    DataBase *dbOrigin;
-    DataBase *dbDestiny;
-    Source *origin;
-    Source *destiny;
-public:
-    virtual void insert() = 0;
-    virtual void select() = 0;
-    virtual void update() = 0;
-    virtual void delete_() = 0;
-protected:
-    DBExecuter() {}
-    virtual ~DBExecuter() {}
-};
+
 
 class Error : public exception {
 private:
@@ -166,6 +152,20 @@ public:
         }
         return "";
     }
+};
+
+class DBExecuter {
+private:
+    DataBase *dbOrigin;
+    DataBase *dbDestiny;
+    Source *origin;
+    Source *destiny;
+public:
+    void insert();
+    void select();
+protected:
+    DBExecuter() {}
+    virtual ~DBExecuter() {}
 };
 
 class ExtractDateFromFile {
