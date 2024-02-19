@@ -120,6 +120,44 @@ public:
     }
 };
 
+class ExtractDateFromFile {
+private:
+    ifstream extracFile;
+    vector<string> extractedDates;
+
+    void __extractDateFromFile() {
+        string line;
+        while (!this->extracFile.eof()) {
+            getline(this->extracFile, line); 
+            this->extractedDates.push_back(line);
+            cout << line << endl;
+        }
+    }
+public:
+    ExtractDateFromFile(const string &fileName) : extracFile(fileName, ios::in) {
+        if (this->extracFile.is_open()){
+            try {
+                cout << "Arquivo Aberto!!!" << endl;
+                cout << endl;
+                this->__extractDateFromFile();
+            }
+            catch(const exception& e) {
+                cout << e.what() << endl;
+            }
+        }
+        else{
+            cout << "Arquivo não está operando..." << endl;
+        }
+    }
+    ~ExtractDateFromFile(){
+        this->extracFile.close();
+        cout << "Arquivo fechado." << endl;
+    }
+    vector<string> getDates() {
+        return this->extractedDates;
+    }
+};
+
 class SQLSupplierDadosEstacao : public SQLSuplier{
     //origin
 public:
