@@ -14,13 +14,13 @@ def gerar_sequencia_de_datas(data_inicial, data_final):
 
 # Data inicial e final da sequência
 data_inicial = datetime(2022, 3, 5)
-data_final = datetime(2024, 2, 10)
+data_final = datetime(2024, 2, 18)
 
 # Gerar a sequência de datas
 sequencia_datas = gerar_sequencia_de_datas(data_inicial, data_final)
 
 # Salvar as datas em um arquivo txt
-nome_arquivo = "dateSequence.txt"
+nome_arquivo = "build/dateSequence.txt"
 with open(nome_arquivo, "a", encoding='utf-8') as arquivo:
     for data in sequencia_datas:
         arquivo.write(f'{data}\n')
