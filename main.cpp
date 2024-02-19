@@ -197,50 +197,43 @@ private:
     Source *origin;
     Source *destiny;
 public:
-    void insert();
-    void select();
+    void insert() {
+
+    };
+    void select() {
+
+    };
 protected:
     DBExecuter() {}
     virtual ~DBExecuter() {}
 };
 
-class ExtractDateFromFile {
+class SourceDadosEstacao : public Source {
 private:
-    ifstream extracFile;
-    vector<string> extractedDates;
-
-    void __extractDateFromFile() {
-        string line;
-        while (!this->extracFile.eof()) {
-            getline(this->extracFile, line); 
-            this->extractedDates.push_back(line);
-            cout << line << endl;
-        }
-    }
+    string fileName = "build/dateSequence.txt";
+    ExtractDateFromFile *tableNames;
 public:
-    ExtractDateFromFile(const string &fileName) : extracFile(fileName, ios::in) {
-        if (this->extracFile.is_open()){
-            try {
-                cout << "Arquivo Aberto!!!" << endl;
-                cout << endl;
-                this->__extractDateFromFile();
-            }
-            catch(const exception& e) {
-                cout << e.what() << endl;
-            }
-        }
-        else{
-            cout << "Arquivo não está operando..." << endl;
-        }
+    SourceDadosEstacao(const string &dbConfig) : Source(dbConfig) {
+        sql = new SQLSupplierDadosEstacao();
+        ExtractDateFromFile *tableNames = new ExtractDateFromFile(
+            this->fileName
+        );
     }
-    ~ExtractDateFromFile(){
-        this->extracFile.close();
-        cout << "Arquivo fechado." << endl;
+    virtual ~SourceDadosEstacao() {}
+
+    string getConfigDB() {
+        return this->config;
     }
-    vector<string> getDates() {
-        return this->extractedDates;
+    vector<string> getQuery() {
+        vector<string> queries;
+        vector<string> *tableNamesFromFile;
+        tableNamesFromFile = &this->tableNames->getDates();
+
+        for_each();
     }
+
 };
+
 
 int main(int, char**){
     // ExtractDateFromFile *extFile = new ExtractDateFromFile("dateSequence.txt");
@@ -260,12 +253,5 @@ int main(int, char**){
     cout << ret << endl;
     cout << ret1 << endl;
 
-    // string a = "meteção";
-    // fmt::print("meteçao lokca {}", 666);
-    // string teste = format("aqui {} é lokura", a);
-    // cout << teste << endl;
-
-
-    return 0;
-    
+    return 0;    
 }
