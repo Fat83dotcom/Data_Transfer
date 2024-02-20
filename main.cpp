@@ -300,14 +300,32 @@ int main(int, char**){
     // cout << ret1 << endl;
     // delete sqlDadoEsta;
 
-    SourceDadosEstacao *source1 = new SourceDadosEstacao("config");
+    // SourceDadosEstacao *source1 = new SourceDadosEstacao("config");
 
-    cout << source1->getConfigDB() << endl;
-    vector<string> test = source1->getQuery();
-    for (auto &&data : test){
-        cout << data << endl;
-    };
-    delete source1;
+    // cout << source1->getConfigDB() << endl;
+    // vector<string> test = source1->getQuery();
+    // for (auto &&data : test){
+    //     cout << data << endl;
+    // };
+    // delete source1;
 
+    DataForTransfer a, b, c;
+    a = {"2024-02-05", "32.5", "85.7", "935.78", "0"};
+    b = {"2024-02-05", "33.8", "75.3", "934.18", "0"};
+    c = {"2024-02-05", "36.78", "47.2", "945.74", "0"};
+
+    vector<DataForTransfer> data;
+    data.push_back(a);
+    data.push_back(b);
+    data.push_back(c);
+
+    SourceEstacaIOT *source2 = new SourceEstacaIOT("config");
+
+    for (auto &dt : data) {
+        source2->setDataQuery(&dt);
+    }
+    for (auto &query : source2->getQuery()) {
+        cout << query << endl;
+    }
     return 0;    
 }
