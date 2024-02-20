@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Site BuildName="Linux-c++"
-	BuildStamp="20240219-1514-Experimental"
+	BuildStamp="20240220-0027-Experimental"
 	Name="machina"
 	Generator="ctest-3.22.1"
 	CompilerName="/usr/bin/c++"
@@ -21,14 +21,14 @@
 	TotalVirtualMemory="1906"
 	TotalPhysicalMemory="7811"
 	LogicalProcessorsPerPhysical="2"
-	ProcessorClockFrequency="798.138"
+	ProcessorClockFrequency="798.135"
 	>
 	<Testing>
-		<StartDateTime>Feb 19 20:50 -03</StartDateTime>
-		<StartTestTime>1708386602</StartTestTime>
+		<StartDateTime>Feb 19 21:27 -03</StartDateTime>
+		<StartTestTime>1708388869</StartTestTime>
 		<TestList/>
-		<EndDateTime>Feb 19 20:50 -03</EndDateTime>
-		<EndTestTime>1708386602</EndTestTime>
+		<EndDateTime>Feb 19 21:27 -03</EndDateTime>
+		<EndTestTime>1708388869</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>

@@ -9,6 +9,7 @@
         "iostream": "cpp",
         "pqxx": "cpp",
         "pipeline": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "new": "cpp"
     }
 }
