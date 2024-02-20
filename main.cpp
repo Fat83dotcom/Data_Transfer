@@ -266,11 +266,20 @@ public:
     }
     vector<string> getQuery() {
         vector<string> queries;
-        for (auto &dFSQL : this->dataForSQL) {   
+        for (auto &dFSQL : this->dataForSQL) {
+            vector<string> args;
+            args.push_back(dFSQL->date_hour);
+            args.push_back(dFSQL->temperature);
+            args.push_back(dFSQL->humidity);
+            args.push_back(dFSQL->pressure);
+            args.push_back(dFSQL->idSensor);
+            queries.push_back(
+                sql->getSQL(args)
+            ); 
         }
+        return queries;
     }
 };
-
 
 int main(int, char**){
     // ExtractDateFromFile *extFile = new ExtractDateFromFile("dateSequence.txt");
