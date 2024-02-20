@@ -26,6 +26,15 @@ using std::chrono::time_point;
 using std::vector;
 using std::for_each;
 
+typedef struct {
+    string date_hour;
+    float temperature;
+    float humidity;
+    float pressure;
+    int idSensor;
+}DataForTransfer;
+
+
 // Interfaces
 
 class SQLSuplier {
