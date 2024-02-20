@@ -40,7 +40,6 @@ typedef struct {
 class SQLSuplier {
 public:
     virtual string getSQL(const vector<string> args) = 0;
-protected:
     SQLSuplier() {}
     virtual ~SQLSuplier() {}
 };
