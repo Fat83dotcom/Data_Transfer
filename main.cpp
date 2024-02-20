@@ -28,10 +28,10 @@ using std::for_each;
 
 typedef struct {
     string date_hour;
-    float temperature;
-    float humidity;
-    float pressure;
-    int idSensor;
+    string temperature;
+    string humidity;
+    string pressure;
+    string idSensor;
 }DataForTransfer;
 
 
