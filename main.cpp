@@ -280,15 +280,25 @@ int main(int, char**){
     // cout << extFile->getDates().size() << endl;
     // delete extFile;
 
-    SQLSupplierDadosEstacao *sqlDadoEsta = new SQLSupplierDadosEstacao();
-    SQLSuplierEstacaoIOT *iot = new SQLSuplierEstacaoIOT();
-    vector<string> arg = {"12-04-2024"};
-    vector<string> arg1 = {"12-04-2024", "deokookde", "kokoko", "dasdasd", "mkmlkm"};
+    // SQLSupplierDadosEstacao *sqlDadoEsta = new SQLSupplierDadosEstacao();
+    // SQLSuplierEstacaoIOT *iot = new SQLSuplierEstacaoIOT();
+    // vector<string> arg = {"12-04-2024"};
+    // vector<string> arg1 = {"12-04-2024", "deokookde", "kokoko", "dasdasd", "mkmlkm"};
    
-    string ret = sqlDadoEsta->getSQL(arg);
-    string ret1 = iot->getSQL(arg1);
-    cout << ret << endl;
-    cout << ret1 << endl;
+    // string ret = sqlDadoEsta->getSQL(arg);
+    // string ret1 = iot->getSQL(arg1);
+    // cout << ret << endl;
+    // cout << ret1 << endl;
+    // delete sqlDadoEsta;
+
+    SourceDadosEstacao *source1 = new SourceDadosEstacao("config");
+
+    cout << source1->getConfigDB() << endl;
+    vector<string> test = source1->getQuery();
+    for (auto &&data : test){
+        cout << data << endl;
+    };
+    delete source1;
 
     return 0;    
 }
