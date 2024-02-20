@@ -216,29 +216,59 @@ protected:
 };
 
 class SourceDadosEstacao : public Source {
-private:
-    string fileName = "build/dateSequence.txt";
-    ExtractDateFromFile *tableNames;
+protected:
+    string fileName = "dateSequence.txt";
+    ExtractDateFromFile *tableNames = new ExtractDateFromFile(
+        this->fileName
+    );
 public:
     SourceDadosEstacao(const string &dbConfig) : Source(dbConfig) {
-        sql = new SQLSupplierDadosEstacao();
-        ExtractDateFromFile *tableNames = new ExtractDateFromFile(
-            this->fileName
-        );
+        this->sql = new SQLSupplierDadosEstacao();
     }
-    virtual ~SourceDadosEstacao() {}
+    virtual ~SourceDadosEstacao() {
+        delete sql;
+        delete this->tableNames;
+    }
 
     string getConfigDB() {
         return this->config;
     }
     vector<string> getQuery() {
         vector<string> queries;
-        vector<string> *tableNamesFromFile;
-        tableNamesFromFile = &this->tableNames->getDates();
-
-        for_each();
+        for (const auto &tbName : this->tableNames->getDates()) {
+            if (!tbName.empty()){
+                vector<string> args;
+                args.push_back(tbName);
+                queries.push_back(
+                    sql->getSQL(args)
+                );
+            }
+        }       
+        return queries;
     }
+};
 
+class SourceEstacaIOT : public Source {
+protected:
+    vector<DataForTransfer*> dataForSQL;
+public:
+    SourceEstacaIOT(const string &dbConfig) : Source(dbConfig) {
+        this->sql = new SQLSuplierEstacaoIOT();
+    }
+    virtual ~SourceEstacaIOT(){
+        delete sql;
+    }
+    string getConfigDB() {
+        return this->config;
+    }
+    void setDataQuery(DataForTransfer* dTQ){
+        this->dataForSQL.push_back(dTQ);
+    }
+    vector<string> getQuery() {
+        vector<string> queries;
+        for (auto &dFSQL : this->dataForSQL) {   
+        }
+    }
 };
 
 
