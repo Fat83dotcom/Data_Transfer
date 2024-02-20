@@ -138,7 +138,6 @@ private:
         while (!this->extracFile.eof()) {
             getline(this->extracFile, line); 
             this->extractedDates.push_back(line);
-            cout << line << endl;
         }
     }
 public:
