@@ -184,20 +184,20 @@ public:
     }
 };
 
-class SQLSupplierDadosEstacao : public SQLSuplier{
+class SQLSupplierDadosEstacao : public SQLSuplier {
     //origin
 public:
-    string getSQL(const vector<string> args) {
-        string sql = format(
-        "SELECT data_hora, temp_ext, umidade, pressao FROM \"tabelas_horarias\"."
-        "\"{}\" FROM dados_estacao;", args[0]
-    );
-    // Define a quantidade de argumentos que o vector deve ter, para controlar a entrada
-    // e saída de argumentos do format em qualquer situação.
-    if (args.size() == 1){
-        return sql;
-    }
-    return "";
+    string getSQL(const vector<string> args) {   
+        // Define a quantidade de argumentos que o vector deve ter, para controlar a entrada
+        // e saída de argumentos do format em qualquer situação.
+        if (args.size() == 1){
+            string sql = format(
+                "SELECT data_hora, temp_ext, umidade, pressao FROM \"tabelas_horarias\"."
+                "\"{}\";", args[0]
+            );
+            return sql;
+        }
+        return "";
     }
 };
 
