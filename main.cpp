@@ -104,7 +104,7 @@ public:
 class DataBase {
 protected:
     pqxx::connection C;
-    LogFile *log = new LogFile("LogFileAlgoritmoExtracaoCPP.txt");
+    LogFile *log = new LogFile("LogClassDataBase.txt");
 public:
     void execDB(const string &sql){
         try {
@@ -150,6 +150,7 @@ public:
 class ExtractDateFromFile {
 private:
     ifstream extracFile;
+    LogFile *log = new LogFile("LogClassExtractDateFromFile.txt");
     vector<string> extractedDates;
 
     void __extractDateFromFile() {
@@ -168,7 +169,7 @@ public:
                 this->__extractDateFromFile();
             }
             catch(const exception& e) {
-                cout << e.what() << endl;
+                this->log->registerLog(e.what());
             }
         }
         else{
@@ -177,6 +178,7 @@ public:
     }
     ~ExtractDateFromFile(){
         this->extracFile.close();
+        delete log;
         cout << "Arquivo fechado." << endl;
     }
     vector<string> getDates() {
@@ -186,37 +188,60 @@ public:
 
 class SQLSupplierDadosEstacao : public SQLSuplier {
     //origin
+private:
+    LogFile *log = new LogFile("LogClassSQLSupplierDadosEstacao.txt");
 public:
     string getSQL(const vector<string> args) {   
         // Define a quantidade de argumentos que o vector deve ter, para controlar a entrada
         // e saída de argumentos do format em qualquer situação.
-        if (args.size() == 1){
-            string sql = format(
-                "SELECT data_hora, temp_ext, umidade, pressao FROM \"tabelas_horarias\"."
-                "\"{}\";", args[0]
-            );
-            return sql;
+        try {
+            if (args.size() == 1){
+                string sql = format(
+                    "SELECT data_hora, temp_ext, umidade, pressao FROM \"tabelas_horarias\"."
+                    "\"{}\";", args[0]
+                );
+                return sql;
+            }
+            return "";
         }
-        return "";
+        catch(const std::exception& e) {
+            this->log->registerLog(e.what());
+        }
+    }
+    virtual ~SQLSupplierDadosEstacao(){
+        delete log;
     }
 };
 
 class SQLSuplierEstacaoIOT : public SQLSuplier {
     // Destiny
+private:
+    LogFile *log = new LogFile("LogClassSQLSupplierDadosEstacao.txt");
 public:
     string getSQL(const vector<string> args){
-        if (args.size() == 5){
-            string sql = format(
-                "INSERT INTO \"Core_datasensor\" (date_hour, temperature, humidity, pressure, id_sensor_id)"
-                " VALUES (\'{}\', {}, {}, {}, {});", args[0], args[1], args[2], args[3], args[4]
-            );
-            return sql;
+        try {
+            if (args.size() == 5){
+                string sql = format(
+                    "INSERT INTO \"Core_datasensor\" (date_hour, temperature, humidity, pressure, id_sensor_id)"
+                    " VALUES (\'{}\', {}, {}, {}, {});", args[0], args[1], args[2], args[3], args[4]
+                );
+                return sql;
+            }
+            return "";
         }
-        return "";
+        catch(const std::exception& e) {
+            this->log->registerLog(e.what());
+        }
+        
+    }
+    virtual ~SQLSuplierEstacaoIOT(){
+        delete log;
     }
 };
 
 class SourceDadosEstacao : public Source {
+private:
+    LogFile *log = new LogFile("LogClassSourceDadosEstacao.txt");
 protected:
     string fileName = "dateSequence.txt";
     ExtractDateFromFile *tableNames = new ExtractDateFromFile(
@@ -228,25 +253,33 @@ public:
     }
     virtual ~SourceDadosEstacao() {
         delete sql;
+        delete log;
         delete this->tableNames;
     }
 
     vector<string> getQuery() {
-        vector<string> queries;
-        for (const auto &tbName : this->tableNames->getDates()) {
-            if (!tbName.empty()){
-                vector<string> args;
-                args.push_back(tbName);
-                queries.push_back(
-                    sql->getSQL(args)
-                );
-            }
-        }       
-        return queries;
+        try {
+            vector<string> queries;
+            for (const auto &tbName : this->tableNames->getDates()) {
+                if (!tbName.empty()){
+                    vector<string> args;
+                    args.push_back(tbName);
+                    queries.push_back(
+                        sql->getSQL(args)
+                    );
+                }
+            }       
+            return queries;
+        }
+        catch(const std::exception& e) {
+            this->log->registerLog(e.what());
+        }   
     }
 };
 
 class SourceEstacaIOT : public Source {
+private:
+    LogFile *log = new LogFile("LogClassSourceEstacaIOT.txt");
 protected:
     vector<DataForTransfer*> dataForSQL;
 public:
@@ -255,28 +288,41 @@ public:
     }
     virtual ~SourceEstacaIOT(){
         delete sql;
+        delete log;
     }
     void setDataQuery(DataForTransfer* dTQ){
-        this->dataForSQL.push_back(dTQ);
+        try {
+           this->dataForSQL.push_back(dTQ); 
+        }
+        catch(const std::exception& e) {
+            this->log->registerLog(e.what());
+        }
     }
     vector<string> getQuery() {
-        vector<string> queries;
-        for (auto &dFSQL : this->dataForSQL) {
-            vector<string> args;
-            args.push_back(dFSQL->date_hour);
-            args.push_back(dFSQL->temperature);
-            args.push_back(dFSQL->humidity);
-            args.push_back(dFSQL->pressure);
-            args.push_back(dFSQL->idSensor);
-            queries.push_back(
-                sql->getSQL(args)
-            ); 
+        try {
+                vector<string> queries;
+            for (auto &dFSQL : this->dataForSQL) {
+                vector<string> args;
+                args.push_back(dFSQL->date_hour);
+                args.push_back(dFSQL->temperature);
+                args.push_back(dFSQL->humidity);
+                args.push_back(dFSQL->pressure);
+                args.push_back(dFSQL->idSensor);
+                queries.push_back(
+                    sql->getSQL(args)
+                ); 
+            }
+            return queries;
         }
-        return queries;
+        catch(const std::exception& e) {
+            this->log->registerLog(e.what());
+        }
     }
 };
 
 class DBExecuter {
+private:
+    LogFile *log = new LogFile("LogClassDBExecuter.txt");
 protected:
     DataBase *dbOrigin;
     DataBase *dbDestiny;
@@ -291,7 +337,7 @@ public:
             destiny = new SourceEstacaIOT;
         }
         catch(const std::exception& e) {
-            std::cerr << e.what() << '\n';
+            this->log->registerLog(e.what());
         }
     }
     ~DBExecuter() {
@@ -299,9 +345,11 @@ public:
         delete dbDestiny;
         delete origin;
         delete destiny;
+        delete log;
     }
     void executer(){
         try {
+            // Complexidade do algoritmo O(n²)
             vector<string> queryOrigin = origin->getQuery();
             for (auto &queryOrigin : queryOrigin) {
                 vector<DataForTransfer> dataFromDB = dbOrigin->returnExecDB(queryOrigin);
@@ -317,7 +365,7 @@ public:
             }
         }
         catch(const std::exception& e) {
-            std::cerr << e.what() << '\n';
+            this->log->registerLog(e.what());
         } 
     }
 };
