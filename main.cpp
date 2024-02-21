@@ -276,6 +276,52 @@ public:
     }
 };
 
+class DBExecuter {
+protected:
+    DataBase *dbOrigin;
+    DataBase *dbDestiny;
+    SourceDadosEstacao *origin;
+    SourceEstacaIOT *destiny;
+public:
+    DBExecuter(){
+        try {
+            dbOrigin = new DataBase(configDBOrigin);
+            dbDestiny = new DataBase(configDBDestiny);
+            origin = new SourceDadosEstacao();
+            destiny = new SourceEstacaIOT;
+        }
+        catch(const std::exception& e) {
+            std::cerr << e.what() << '\n';
+        }
+    }
+    ~DBExecuter() {
+        delete dbOrigin;
+        delete dbDestiny;
+        delete origin;
+        delete destiny;
+    }
+    void executer(){
+        try {
+            vector<string> queryOrigin = origin->getQuery();
+            for (auto &queryOrigin : queryOrigin) {
+                vector<DataForTransfer> dataFromDB = dbOrigin->returnExecDB(queryOrigin);
+
+                for (auto &transferDataTo : dataFromDB) {
+                    destiny->setDataQuery(&transferDataTo);
+                }
+
+                vector<string> queryDestiny = destiny->getQuery();
+                for (auto &&queryDestiny : queryDestiny){
+                    dbDestiny->execDB(queryDestiny);
+                }
+            }
+        }
+        catch(const std::exception& e) {
+            std::cerr << e.what() << '\n';
+        } 
+    }
+};
+
 int main(int, char**){
     // ExtractDateFromFile *extFile = new ExtractDateFromFile("dateSequence.txt");
     // for (const auto &date : extFile->getDates()){
