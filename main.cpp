@@ -205,33 +205,15 @@ class SQLSuplierEstacaoIOT : public SQLSuplier {
     // Destiny
 public:
     string getSQL(const vector<string> args){
-        string sql = format(
-            "INSERT INTO \"Core_datasensor\" (date_hour, temperature, humidity, pressure, id_sensor_id)"
-            " VALUES (\'{}\', {}, {}, {}, {});", args[0], args[1], args[2], args[3], args[4]
-        );
         if (args.size() == 5){
+            string sql = format(
+                "INSERT INTO \"Core_datasensor\" (date_hour, temperature, humidity, pressure, id_sensor_id)"
+                " VALUES (\'{}\', {}, {}, {}, {});", args[0], args[1], args[2], args[3], args[4]
+            );
             return sql;
         }
         return "";
     }
-};
-
-class DBExecuter {
-private:
-    DataBase *dbOrigin;
-    DataBase *dbDestiny;
-    Source *origin;
-    Source *destiny;
-public:
-    void insert() {
-
-    };
-    void select() {
-
-    };
-protected:
-    DBExecuter() {}
-    virtual ~DBExecuter() {}
 };
 
 class SourceDadosEstacao : public Source {
