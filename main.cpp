@@ -102,12 +102,11 @@ public:
 };
 
 class DataBase {
-private:
+protected:
     pqxx::connection C;
     LogFile *log = new LogFile("LogFileAlgoritmoExtracaoCPP.txt");
-    
-
-    void _execDB(const string &sql){
+public:
+    void execDB(const string &sql){
         try {
             pqxx::work W(C);
             W.exec(sql);
@@ -117,7 +116,30 @@ private:
             this->log->registerLog(e.what());
         }
     }
-public:
+    vector<DataForTransfer> returnExecDB(const string &sql){
+        try {
+            pqxx::work W(C);
+            result r {W.exec(sql)};
+            vector<DataForTransfer> data;
+            for (auto row : r) {
+                DataForTransfer tuple;
+                tuple.date_hour = row[0].c_str();
+                tuple.temperature = row[1].c_str();
+                tuple.humidity = row[2].c_str();
+                tuple.pressure = row[3].c_str();
+                tuple.idSensor = "0";
+                data.push_back(tuple);
+            }
+            W.commit();
+            return data;
+        } 
+        catch (const exception &e) {
+            this->log->registerLog(e.what());
+            vector<DataForTransfer> dataNone;
+            return dataNone;
+        }
+    }
+
     DataBase(const string &config) : C(config){}
     virtual ~DataBase(){
         delete log;
