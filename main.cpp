@@ -47,14 +47,10 @@ public:
 
 class Source {
 protected:
-    string config;
     SQLSuplier *sql;
 public:
-    Source(const string &dbConfig) {
-        config = dbConfig;
-    }
+    Source() {}
     virtual ~Source(){}
-    virtual string getConfigDB() = 0;
     virtual vector<string> getQuery() = 0;
 };
 
