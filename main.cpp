@@ -223,7 +223,7 @@ protected:
         this->fileName
     );
 public:
-    SourceDadosEstacao(const string &dbConfig) : Source(dbConfig) {
+    SourceDadosEstacao() : Source() {
         this->sql = new SQLSupplierDadosEstacao();
     }
     virtual ~SourceDadosEstacao() {
@@ -231,9 +231,6 @@ public:
         delete this->tableNames;
     }
 
-    string getConfigDB() {
-        return this->config;
-    }
     vector<string> getQuery() {
         vector<string> queries;
         for (const auto &tbName : this->tableNames->getDates()) {
@@ -253,14 +250,11 @@ class SourceEstacaIOT : public Source {
 protected:
     vector<DataForTransfer*> dataForSQL;
 public:
-    SourceEstacaIOT(const string &dbConfig) : Source(dbConfig) {
+    SourceEstacaIOT() : Source() {
         this->sql = new SQLSuplierEstacaoIOT();
     }
     virtual ~SourceEstacaIOT(){
         delete sql;
-    }
-    string getConfigDB() {
-        return this->config;
     }
     void setDataQuery(DataForTransfer* dTQ){
         this->dataForSQL.push_back(dTQ);
