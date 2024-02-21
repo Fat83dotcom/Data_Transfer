@@ -12,19 +12,20 @@
 
 namespace fs = std::filesystem;
 
-using fmt::format;
-using std::string;
-using std::exception;
+using std::ios;
 using std::cout;
 using std::endl;
+using fmt::format;
+using std::string;
+using std::vector;
+using pqxx::result;
+using std::getline;
+using std::for_each;
 using std::ofstream;
 using std::ifstream;
-using std::getline;
-using std::ios;
+using std::exception;
 using std::chrono::system_clock;
 using std::chrono::time_point;
-using std::vector;
-using std::for_each;
 
 typedef struct {
     string date_hour;
