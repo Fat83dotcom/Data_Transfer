@@ -127,7 +127,7 @@ public:
                 tuple.temperature = row[1].c_str();
                 tuple.humidity = row[2].c_str();
                 tuple.pressure = row[3].c_str();
-                tuple.idSensor = "0";
+                tuple.idSensor = "1";
                 data.push_back(tuple);
             }
             W.commit();
