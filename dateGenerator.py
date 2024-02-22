@@ -21,6 +21,6 @@ sequencia_datas = gerar_sequencia_de_datas(data_inicial, data_final)
 
 # Salvar as datas em um arquivo txt
 nome_arquivo = "build/dateSequence.txt"
-with open(nome_arquivo, "a", encoding='utf-8') as arquivo:
+with open(nome_arquivo, "w", encoding='utf-8') as arquivo:
     for data in sequencia_datas:
         arquivo.write(f'{data}\n')
