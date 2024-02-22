@@ -435,8 +435,6 @@ public:
             cout << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
 
             for (auto &queryOrigin : queryOrigin) {
-                count->incrementTables();
-
                 cout << "Query que está sendo buscada e transferida: " << queryOrigin << "-> ";
                 time->startTimer();
                 vector<DataForTransfer> dataFromDB = dbOrigin->returnExecDB(queryOrigin);
@@ -462,11 +460,13 @@ public:
                 }
                 time->endTimer();
                 cout << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
-
+                if (count->getsectionRows() > 0) count->incrementTables();
+             
                 count->incrementTotalRows();
                 cout << "Transação terminada..." << endl;
                 cout << "Linhas inseridas dessa query: " << count->getsectionRows() << endl;
                 cout << "Linha inseridas até agora: " << count->getTotalRows() << endl;
+                cout << "Tabelas inseridas até agora: " << count->getNumTables() << endl;
                 cout << "***************************************" << endl;
                 count->resetRows();
             }
