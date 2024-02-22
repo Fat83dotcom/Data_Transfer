@@ -293,9 +293,19 @@ public:
         delete sql;
         delete log;
     }
+    void clearDataQuery(){
+        try {
+            if (!this->dataForSQL.empty()) {
+                this->dataForSQL.clear();
+            }
+        }
+        catch(const std::exception& e) {
+            this->log->registerLog(e.what());
+        }
+    }
     void setDataQuery(DataForTransfer* dTQ){
         try {
-           this->dataForSQL.push_back(dTQ); 
+            this->dataForSQL.push_back(dTQ);
         }
         catch(const std::exception& e) {
             this->log->registerLog(e.what());
