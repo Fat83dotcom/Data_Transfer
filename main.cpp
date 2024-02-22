@@ -375,6 +375,7 @@ protected:
     DataBase *dbDestiny;
     SourceDadosEstacao *origin;
     SourceEstacaIOT *destiny;
+    Counter *count;
 public:
     DBExecuter(){
         try {
@@ -382,6 +383,7 @@ public:
             dbDestiny = new DataBase(configDBDestiny);
             origin = new SourceDadosEstacao();
             destiny = new SourceEstacaIOT;
+            count = new Counter();
         }
         catch(const std::exception& e) {
             this->log->registerLog(e.what());
@@ -393,23 +395,43 @@ public:
         delete origin;
         delete destiny;
         delete log;
+        delete count;
     }
     void executer(){
         try {
             // Complexidade do algoritmo O(n²)
             vector<string> queryOrigin = origin->getQuery();
             for (auto &queryOrigin : queryOrigin) {
+                count->incrementTables();
+
+                cout << "Query que está sendo buscada e transferida: " << queryOrigin << endl;
+
                 vector<DataForTransfer> dataFromDB = dbOrigin->returnExecDB(queryOrigin);
 
+                destiny->clearDataQuery();
                 for (auto &transferDataTo : dataFromDB) {
                     destiny->setDataQuery(&transferDataTo);
                 }
 
+                cout << "Criando as queries de inserção..." << endl;
+
                 vector<string> queryDestiny = destiny->getQuery();
+
+                cout << "Transferindo..." << endl;
+
                 for (auto &&queryDestiny : queryDestiny){
+                    count-> incrementRows();
                     dbDestiny->execDB(queryDestiny);
                 }
+                count->incrementTotalRows();
+                cout << "Transação terminada..." << endl;
+                cout << "Linhas inseridas dessa query: " << count->getsectionRows() << endl;
+                cout << "Linha inseridas até agora: " << count->getTotalRows() << endl;
+                cout << "***************************************" << endl;
+                count->resetRows();
             }
+            cout << "Total de tabelas Inseridas: " << count->getNumTables() << endl;
+            cout << "Total de linhas inseridas: " << count-> getTotalRows() << endl;
         }
         catch(const std::exception& e) {
             this->log->registerLog(e.what());
