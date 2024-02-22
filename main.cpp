@@ -26,6 +26,8 @@ using std::ifstream;
 using std::exception;
 using std::chrono::system_clock;
 using std::chrono::time_point;
+using std::chrono::duration;
+
 
 typedef struct {
     string date_hour;
@@ -367,6 +369,29 @@ public:
     }
 };
 
+class Timer {
+private:
+    time_point<std::chrono::steady_clock> start;
+    time_point<std::chrono::steady_clock> end;
+    duration<double> diff;
+public:
+    Timer(){}
+    ~Timer(){}
+
+    void startTimer() {
+        start = std::chrono::steady_clock::now();
+    }
+
+    void endTimer() {
+        end = std::chrono::steady_clock::now();
+        diff = end - start;
+    }
+
+    double getElapsedTimeInSeconds() {
+        return diff.count();
+    }
+};
+
 class DBExecuter {
 private:
     LogFile *log = new LogFile("LogClassDBExecuter.txt");
@@ -376,6 +401,7 @@ protected:
     SourceDadosEstacao *origin;
     SourceEstacaIOT *destiny;
     Counter *count;
+    Timer *time;
 public:
     DBExecuter(){
         try {
@@ -384,6 +410,7 @@ public:
             origin = new SourceDadosEstacao();
             destiny = new SourceEstacaIOT;
             count = new Counter();
+            time = new Timer();
         }
         catch(const std::exception& e) {
             this->log->registerLog(e.what());
@@ -396,33 +423,46 @@ public:
         delete destiny;
         delete log;
         delete count;
+        delete time;
     }
     void executer(){
         try {
             // Complexidade do algoritmo O(n²)
+            cout << "Criando as queries de consulta..." << "-> ";
+            time->startTimer();
             vector<string> queryOrigin = origin->getQuery();
+            time->endTimer();
+            cout << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
+
             for (auto &queryOrigin : queryOrigin) {
                 count->incrementTables();
 
-                cout << "Query que está sendo buscada e transferida: " << queryOrigin << endl;
-
+                cout << "Query que está sendo buscada e transferida: " << queryOrigin << "-> ";
+                time->startTimer();
                 vector<DataForTransfer> dataFromDB = dbOrigin->returnExecDB(queryOrigin);
+                time->endTimer();
+                cout << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
 
                 destiny->clearDataQuery();
                 for (auto &transferDataTo : dataFromDB) {
                     destiny->setDataQuery(&transferDataTo);
                 }
 
-                cout << "Criando as queries de inserção..." << endl;
-
+                cout << "Criando as queries de inserção..." << "-> ";
+                time->startTimer();
                 vector<string> queryDestiny = destiny->getQuery();
+                time->endTimer();
+                cout << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
 
-                cout << "Transferindo..." << endl;
-
+                cout << "Transferindo..." << "-> ";
+                time->startTimer();
                 for (auto &&queryDestiny : queryDestiny){
                     count-> incrementRows();
                     dbDestiny->execDB(queryDestiny);
                 }
+                time->endTimer();
+                cout << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
+
                 count->incrementTotalRows();
                 cout << "Transação terminada..." << endl;
                 cout << "Linhas inseridas dessa query: " << count->getsectionRows() << endl;
