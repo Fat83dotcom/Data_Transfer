@@ -329,7 +329,41 @@ public:
         }
         catch(const std::exception& e) {
             this->log->registerLog(e.what());
+            vector<string> queries;
+            return queries;
         }
+    }
+};
+
+class Counter {
+private:
+    unsigned long numTables = 0;
+    unsigned long sectionRows = 0;
+    unsigned long totalRows = 0;
+
+public:
+    Counter(){}
+    ~Counter(){}
+    void incrementRows() {
+        this->sectionRows++;
+    }
+    void resetRows() {
+        this->sectionRows = 0;
+    }
+    void incrementTables() {
+        this->numTables++;
+    }
+    void incrementTotalRows() {
+        this->totalRows += this->sectionRows;
+    }
+    unsigned long getTotalRows() {
+        return this->totalRows;
+    }
+    unsigned long getNumTables() {
+        return this->numTables;
+    }
+    unsigned long getsectionRows() {
+        return this->sectionRows;
     }
 };
 
