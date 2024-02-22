@@ -468,7 +468,7 @@ int main(int, char**){
     // data.push_back(b);
     // data.push_back(c);
 
-    // SourceEstacaIOT *source2 = new SourceEstacaIOT("config");
+    // SourceEstacaIOT *source2 = new SourceEstacaIOT();
 
     // for (auto &dt : data) {
     //     source2->setDataQuery(&dt);
@@ -479,9 +479,8 @@ int main(int, char**){
 
     // delete source2;
 
-    // SourceDadosEstacao *source1 = new SourceDadosEstacao("config");
+    // SourceDadosEstacao *source1 = new SourceDadosEstacao();
 
-    // cout << source1->getConfigDB() << endl;
     // vector<string> sqlVector = source1->getQuery();
     // for (auto &&data : sqlVector){
     //     cout << data << endl;
@@ -494,10 +493,14 @@ int main(int, char**){
     //     db->returnExecDB(data);
     // };
     // delete db;
-
-    DBExecuter *exec = new DBExecuter();
-    exec->executer();
-    delete exec;
+    try {
+        DBExecuter *exec = new DBExecuter();
+        exec->executer();
+        delete exec;
+    }
+    catch(const std::exception& e) {
+        std::cerr << e.what() << '\n';
+    }
 
     return 0;    
 }
