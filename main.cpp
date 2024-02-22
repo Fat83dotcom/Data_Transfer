@@ -313,7 +313,7 @@ public:
     }
     vector<string> getQuery() {
         try {
-                vector<string> queries;
+            vector<string> queries;
             for (auto &dFSQL : this->dataForSQL) {
                 vector<string> args;
                 args.push_back(dFSQL->date_hour);
