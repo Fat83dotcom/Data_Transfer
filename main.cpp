@@ -206,6 +206,7 @@ public:
         }
         catch(const std::exception& e) {
             this->log->registerLog(e.what());
+            return "";
         }
     }
     virtual ~SQLSupplierDadosEstacao(){
@@ -231,8 +232,8 @@ public:
         }
         catch(const std::exception& e) {
             this->log->registerLog(e.what());
+            return "";
         }
-        
     }
     virtual ~SQLSuplierEstacaoIOT(){
         delete log;
@@ -273,6 +274,8 @@ public:
         }
         catch(const std::exception& e) {
             this->log->registerLog(e.what());
+            vector<string> queries;
+            return queries;
         }   
     }
 };
