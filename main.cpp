@@ -295,7 +295,7 @@ public:
         delete sql;
         delete log;
     }
-    void clearDataQuery(){
+    void _clearDataQuery(){
         try {
             if (!this->dataForSQL.empty()) {
                 this->dataForSQL.clear();
@@ -327,6 +327,7 @@ public:
                     sql->getSQL(args)
                 ); 
             }
+            this->_clearDataQuery();
             return queries;
         }
         catch(const std::exception& e) {
