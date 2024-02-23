@@ -118,7 +118,7 @@ public:
             this->log->registerLog(e.what());
         }
     }
-    vector<DataForTransfer> returnExecDB(const string &sql){
+    vector<DataForTransfer> returnExecDB(const string &sql, const string idSensor){
         try {
             pqxx::work W(C);
             result r {W.exec(sql)};
@@ -129,7 +129,7 @@ public:
                 tuple.temperature = row[1].c_str();
                 tuple.humidity = row[2].c_str();
                 tuple.pressure = row[3].c_str();
-                tuple.idSensor = "1";
+                tuple.idSensor = idSensor;
                 data.push_back(tuple);
             }
             W.commit();
