@@ -43422,3 +43422,133 @@ Log Operando -> Friday, 23/02/2024 18:48:45
 
 Log Operando -> Friday, 23/02/2024 18:48:45
 
+ERROR:  relation "tabelas_horarias.06-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:30
+
+ERROR:  relation "tabelas_horarias.07-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:31
+
+ERROR:  relation "tabelas_horarias.08-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:32
+
+ERROR:  relation "tabelas_horarias.09-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:33
+
+ERROR:  relation "tabelas_horarias.10-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:34
+
+ERROR:  relation "tabelas_horarias.11-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:35
+
+ERROR:  relation "tabelas_horarias.12-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:36
+
+ERROR:  relation "tabelas_horarias.13-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:37
+
+ERROR:  relation "tabelas_horarias.14-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:38
+
+ERROR:  relation "tabelas_horarias.15-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:39
+
+ERROR:  relation "tabelas_horarias.16-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:41
+
+ERROR:  relation "tabelas_horarias.17-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:42
+
+ERROR:  relation "tabelas_horarias.18-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:43
+
+ERROR:  relation "tabelas_horarias.19-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:44
+
+ERROR:  relation "tabelas_horarias.20-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:45
+
+ERROR:  relation "tabelas_horarias.21-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:46
+
+ERROR:  relation "tabelas_horarias.22-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:47
+
+ERROR:  relation "tabelas_horarias.23-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:48
+
+ERROR:  relation "tabelas_horarias.24-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:49
+
+ERROR:  relation "tabelas_horarias.25-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:50
+
+ERROR:  relation "tabelas_horarias.26-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:51
+
+ERROR:  relation "tabelas_horarias.27-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:52
+
+ERROR:  relation "tabelas_horarias.28-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:53
+
+ERROR:  relation "tabelas_horarias.29-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:54
+
+ERROR:  relation "tabelas_horarias.30-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:55
+
+ERROR:  relation "tabelas_horarias.31-03-2022" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Friday, 23/02/2024 19:04:56
+
