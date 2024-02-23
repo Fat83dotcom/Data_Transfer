@@ -438,11 +438,10 @@ public:
             for (auto &queryOrigin : queryOrigin) {
                 cout << "Query que está sendo buscada e transferida: " << queryOrigin << "-> ";
                 time->startTimer();
-                vector<DataForTransfer> dataFromDB = dbOrigin->returnExecDB(queryOrigin);
+                vector<DataForTransfer> dataFromDB = dbOrigin->returnExecDB(queryOrigin, "77");
                 time->endTimer();
                 cout << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
 
-                destiny->clearDataQuery();
                 for (auto &transferDataTo : dataFromDB) {
                     destiny->setDataQuery(&transferDataTo);
                 }
