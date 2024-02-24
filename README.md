@@ -16,3 +16,22 @@ Basicamente ele faz um `SELECT` em um banco `origin`, manipula os dados recebido
 * O programa foi compilado com Linux Ubuntu 22.04.4 LTS, gcc 11.4.0, CMake 3.22.1
 
 * O script Python foi criado para o contexto do programa.
+
+* Na mesma pasta de main.cpp é necessario criar um arquivo header com as credenciais dos bancos. Ocultei ela dos commits por obviedade de segurança.
+
+
+`configFile.h`
+
+```
+#ifndef CONFIG_FILE
+#define CONFIG_FILE
+
+using std::string;
+
+const string configDBDestiny = "dbname=####### user=####### password=####### hostaddr=######## port=5432";
+
+const string configDBOrigin = "dbname=####### user=####### password=####### hostaddr=######## port=5432";
+
+#endif
+
+```
