@@ -8,7 +8,7 @@ Basicamente ele faz um `SELECT` em um banco `origin`, manipula os dados recebido
 * Ele pode ser adaptado para qualquer operação de transferência simples de `SELECT` e `INSERT`, ou qualquer outra que se adaptar.
 * Para compilar o programa é requisito ter as bibliotecas instaladas:
 
-- API PostgreSQL para C++ [PQXX](https://github.com/jtv/libpqxx)
+- API PostgreSQL para C++ [libpqxx](https://github.com/jtv/libpqxx) - versão 7.6.2
 - Formatador de strings C++ [fmt](https://github.com/fmtlib/fmt) - c++20
 
 * Os arquivos CMakeLists.txt e FindPQXX.cmake já estão no repositório, ou podem ser encontrados [aqui](https://gist.github.com/Fat83dotcom/d67ef7b4c8ad948df11e637e416eeaa7)
