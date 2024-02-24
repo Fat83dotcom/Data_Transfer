@@ -8,12 +8,20 @@
 #include <sstream>
 #include <chrono>
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <syslog.h>
+
 #include "configFile.h"
 
 namespace fs = std::filesystem;
 
 using std::ios;
-using std::cout;
+// using std::cout;
 using std::endl;
 using fmt::format;
 using std::string;
@@ -27,6 +35,38 @@ using std::exception;
 using std::chrono::system_clock;
 using std::chrono::time_point;
 using std::chrono::duration;
+   
+static void daemon(const char* workPath) {
+    pid_t pid;
+    
+    pid = fork();
+    
+    if (pid < 0) exit(EXIT_FAILURE);
+    
+    if (pid > 0) exit(EXIT_SUCCESS);
+
+    if (setsid() < 0) exit(EXIT_FAILURE);
+
+    signal(SIGCHLD, SIG_IGN);
+    signal(SIGHUP, SIG_IGN);
+
+    pid = fork();
+
+    if (pid < 0) exit(EXIT_FAILURE);
+ 
+    if (pid > 0) exit(EXIT_SUCCESS);
+
+    umask(0);
+
+    chdir(workPath);
+    
+    int x;
+    for (x = sysconf(_SC_OPEN_MAX); x>=0; x--) {
+        close (x);
+    }
+
+    openlog ("Data_Transfer", LOG_PID, LOG_DAEMON);
+}
 
 
 typedef struct {
@@ -70,7 +110,7 @@ public:
 // Concrete Classes
 
 class LogFile {
-private:
+protected:
     ofstream logFile;
 public:
     LogFile(const string &nameF) : logFile(nameF, ios::app) {
@@ -78,13 +118,9 @@ public:
             logFile << "Log Operando -> " <<  this->currentTime() << endl;
             logFile << endl;
         }
-        else{
-            cout << "Log não está operando..." << endl;
-        }
     }
     ~LogFile(){
         logFile.close();
-        cout << "Arquivo Log fechado." << endl;
     }
 
     string currentTime(){
@@ -145,7 +181,6 @@ public:
     DataBase(const string &config) : C(config){}
     virtual ~DataBase(){
         delete log;
-        cout << "DB delete." << endl;
     }
 };
 
@@ -166,22 +201,16 @@ public:
     ExtractDateFromFile(const string &fileName) : extracFile(fileName, ios::in) {
         if (this->extracFile.is_open()){
             try {
-                cout << "Arquivo Aberto!!!" << endl;
-                cout << endl;
                 this->__extractDateFromFile();
             }
             catch(const exception& e) {
                 this->log->registerLog(e.what());
             }
         }
-        else{
-            cout << "Arquivo não está operando..." << endl;
-        }
     }
     ~ExtractDateFromFile(){
         this->extracFile.close();
         delete log;
-        cout << "Arquivo fechado." << endl;
     }
     vector<string> getDates() {
         return this->extractedDates;
@@ -393,9 +422,28 @@ public:
     }
 };
 
+class LogExecuter {
+private:
+    ofstream logFile;
+public:
+    LogExecuter(const string &nameFile) : logFile(nameFile, ios::app) {
+        if(this->logFile.is_open()){
+            logFile << "Log Executer on fire !!" << endl;
+        }
+    }
+    ~LogExecuter() {
+        this->logFile.close();
+    }
+
+    ofstream& registerLog() {
+        return logFile;
+    }
+};
+
 class DBExecuter {
 private:
     LogFile *log = new LogFile("LogClassDBExecuter.txt");
+    LogExecuter *innerFile = new LogExecuter("Log_Executer.txt");
 protected:
     DataBase *dbOrigin;
     DataBase *dbDestiny;
@@ -404,7 +452,7 @@ protected:
     Counter *count;
     Timer *time;
 public:
-    DBExecuter(){
+    DBExecuter() {
         try {
             dbOrigin = new DataBase(configDBOrigin);
             dbDestiny = new DataBase(configDBDestiny);
@@ -425,53 +473,54 @@ public:
         delete log;
         delete count;
         delete time;
+        delete innerFile;
     }
     void executer(){
         try {
             // Complexidade do algoritmo O(n²)
-            cout << "Criando as queries de consulta..." << "-> ";
+            innerFile->registerLog() << "Criando as queries de consulta..." << "-> ";
             time->startTimer();
             vector<string> queryOrigin = origin->getQuery();
             time->endTimer();
-            cout << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
+            innerFile->registerLog() << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
 
             for (auto &queryOrigin : queryOrigin) {
-                cout << "Query que está sendo buscada e transferida: " << queryOrigin << "-> ";
+                innerFile->registerLog() << "Query que está sendo buscada e transferida: " << queryOrigin << "-> ";
                 time->startTimer();
                 vector<DataForTransfer> dataFromDB = dbOrigin->returnExecDB(queryOrigin, "77");
                 time->endTimer();
-                cout << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
+                innerFile->registerLog() << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
 
                 for (auto &transferDataTo : dataFromDB) {
                     destiny->setDataQuery(&transferDataTo);
                 }
 
-                cout << "Criando as queries de inserção..." << "-> ";
+                innerFile->registerLog() << "Criando as queries de inserção..." << "-> ";
                 time->startTimer();
                 vector<string> queryDestiny = destiny->getQuery();
                 time->endTimer();
-                cout << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
+                innerFile->registerLog() << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
 
-                cout << "Transferindo..." << "-> ";
+                innerFile->registerLog() << "Transferindo..." << "-> ";
                 time->startTimer();
                 for (auto &&queryDestiny : queryDestiny){
                     count-> incrementRows();
                     dbDestiny->execDB(queryDestiny);
                 }
                 time->endTimer();
-                cout << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
+                innerFile->registerLog() << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
                 if (count->getsectionRows() > 0) count->incrementTables();
              
                 count->incrementTotalRows();
-                cout << "Transação terminada..." << endl;
-                cout << "Linhas inseridas dessa query: " << count->getsectionRows() << endl;
-                cout << "Linha inseridas até agora: " << count->getTotalRows() << endl;
-                cout << "Tabelas inseridas até agora: " << count->getNumTables() << endl;
-                cout << "***************************************" << endl;
+                innerFile->registerLog() << "Transação terminada..." << endl;
+                innerFile->registerLog() << "Linhas inseridas dessa query: " << count->getsectionRows() << endl;
+                innerFile->registerLog() << "Linha inseridas até agora: " << count->getTotalRows() << endl;
+                innerFile->registerLog() << "Tabelas inseridas até agora: " << count->getNumTables() << endl;
+                innerFile->registerLog() << "***************************************" << endl;
                 count->resetRows();
             }
-            cout << "Total de tabelas Inseridas: " << count->getNumTables() << endl;
-            cout << "Total de linhas inseridas: " << count-> getTotalRows() << endl;
+            innerFile->registerLog() << "Total de tabelas Inseridas: " << count->getNumTables() << endl;
+            innerFile->registerLog() << "Total de linhas inseridas: " << count-> getTotalRows() << endl;
         }
         catch(const std::exception& e) {
             this->log->registerLog(e.what());
@@ -480,67 +529,26 @@ public:
 };
 
 int main(int, char**){
-    // ExtractDateFromFile *extFile = new ExtractDateFromFile("dateSequence.txt");
-    // for (const auto &date : extFile->getDates()){
-    //     cout << date << endl;
-    // };
-    // cout << extFile->getDates().size() << endl;
-    // delete extFile;
 
-    // SQLSupplierDadosEstacao *sqlDadoEsta = new SQLSupplierDadosEstacao();
-    // SQLSuplierEstacaoIOT *iot = new SQLSuplierEstacaoIOT();
-    // vector<string> arg = {"12-04-2024"};
-    // vector<string> arg1 = {"12-04-2024", "deokookde", "kokoko", "dasdasd", "mkmlkm"};
-   
-    // string ret = sqlDadoEsta->getSQL(arg);
-    // string ret1 = iot->getSQL(arg1);
-    // cout << ret << endl;
-    // cout << ret1 << endl;
-    // delete sqlDadoEsta;
+    const char* dirTarget = "/home/ubuntu/data_transf";
+    // const char* dirTarget = "/home/fernando/Área de Trabalho/Data_Transfer/dataTransf"
 
-    // DataForTransfer a, b, c;
-    // a = {"2024-02-05", "32.5", "85.7", "935.78", "0"};
-    // b = {"2024-02-05", "33.8", "75.3", "934.18", "0"};
-    // c = {"2024-02-05", "36.78", "47.2", "945.74", "0"};
-
-    // vector<DataForTransfer> data;
-    // data.push_back(a);
-    // data.push_back(b);
-    // data.push_back(c);
-
-    // SourceEstacaIOT *source2 = new SourceEstacaIOT();
-
-    // for (auto &dt : data) {
-    //     source2->setDataQuery(&dt);
-    // }
-    // for (auto &query : source2->getQuery()) {
-    //     cout << query << endl;
-    // }
-
-    // delete source2;
-
-    // SourceDadosEstacao *source1 = new SourceDadosEstacao();
-
-    // vector<string> sqlVector = source1->getQuery();
-    // for (auto &&data : sqlVector){
-    //     cout << data << endl;
-    // };
-    // delete source1;
-
-    // DataBase *db = new DataBase(configDBOrigin);
-
-    // for (auto &&data : sqlVector){
-    //     db->returnExecDB(data);
-    // };
-    // delete db;
-    try {
+    daemon(dirTarget);
+    
+    while (1) {
+        syslog (LOG_NOTICE, "Data_Transfer Daemon started.");
+        try {
         DBExecuter *exec = new DBExecuter();
         exec->executer();
         delete exec;
+        }
+        catch(const std::exception& e) {
+            std::cerr << e.what() << '\n';
+        }
     }
-    catch(const std::exception& e) {
-        std::cerr << e.what() << '\n';
-    }
-
-    return 0;    
+   
+    syslog (LOG_NOTICE, "Data_Transfer Daemon terminated.");
+    closelog();
+    
+    return EXIT_SUCCESS;
 }
