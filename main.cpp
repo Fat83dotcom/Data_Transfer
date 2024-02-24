@@ -551,7 +551,4 @@ int main(int, char**){
     closelog();
     
     return EXIT_SUCCESS;
-    
-
-    return 0;    
 }
