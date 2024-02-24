@@ -1,0 +1,4 @@
+Log Executer on fire !!
+Criando as queries de consulta...-> Tempo de execução: 0.012683s.
+Query que está sendo buscada e transferida: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_horarias"."05-03-2022";-> Tempo de execução: 0.926271s.
+Criando as queries de inserção...-> Tempo de execução: 2.00365s.
