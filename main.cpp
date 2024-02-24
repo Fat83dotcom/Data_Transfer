@@ -543,7 +543,7 @@ int main(int, char**){
         delete exec;
         }
         catch(const std::exception& e) {
-            std::cerr << e.what() << '\n';
+            ;
         }
     }
    
