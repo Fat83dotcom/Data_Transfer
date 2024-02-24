@@ -110,7 +110,7 @@ public:
 // Concrete Classes
 
 class LogFile {
-private:
+protected:
     ofstream logFile;
 public:
     LogFile(const string &nameF) : logFile(nameF, ios::app) {
