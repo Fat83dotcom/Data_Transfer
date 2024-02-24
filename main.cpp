@@ -422,10 +422,28 @@ public:
     }
 };
 
+class LogExecuter {
+private:
+    ofstream logFile;
+public:
+    LogExecuter(const string &nameFile) : logFile(nameFile, ios::app) {
+        if(this->logFile.is_open()){
+            logFile << "Log Executer on fire !!" << endl;
+        }
+    }
+    ~LogExecuter() {
+        this->logFile.close();
+    }
+
+    ofstream& registerLog() {
+        return logFile;
+    }
+};
+
 class DBExecuter {
 private:
     LogFile *log = new LogFile("LogClassDBExecuter.txt");
-    ofstream innerFile;
+    LogExecuter *innerFile = new LogExecuter("Log_Executer.txt");
 protected:
     DataBase *dbOrigin;
     DataBase *dbDestiny;
@@ -434,7 +452,7 @@ protected:
     Counter *count;
     Timer *time;
 public:
-    DBExecuter() : innerFile("Executer_Log.txt", ios::in) {
+    DBExecuter() {
         try {
             dbOrigin = new DataBase(configDBOrigin);
             dbDestiny = new DataBase(configDBDestiny);
@@ -442,9 +460,6 @@ public:
             destiny = new SourceEstacaIOT;
             count = new Counter();
             time = new Timer();
-            if (innerFile.is_open()) {
-                innerFile << "Arquivo Operando !!!" << endl;
-            } 
         }
         catch(const std::exception& e) {
             this->log->registerLog(e.what());
@@ -458,53 +473,54 @@ public:
         delete log;
         delete count;
         delete time;
+        delete innerFile;
     }
     void executer(){
         try {
             // Complexidade do algoritmo O(n²)
-            innerFile << "Criando as queries de consulta..." << "-> ";
+            innerFile->registerLog() << "Criando as queries de consulta..." << "-> ";
             time->startTimer();
             vector<string> queryOrigin = origin->getQuery();
             time->endTimer();
-            innerFile << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
+            innerFile->registerLog() << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
 
             for (auto &queryOrigin : queryOrigin) {
-                innerFile << "Query que está sendo buscada e transferida: " << queryOrigin << "-> ";
+                innerFile->registerLog() << "Query que está sendo buscada e transferida: " << queryOrigin << "-> ";
                 time->startTimer();
                 vector<DataForTransfer> dataFromDB = dbOrigin->returnExecDB(queryOrigin, "77");
                 time->endTimer();
-                innerFile << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
+                innerFile->registerLog() << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
 
                 for (auto &transferDataTo : dataFromDB) {
                     destiny->setDataQuery(&transferDataTo);
                 }
 
-                innerFile << "Criando as queries de inserção..." << "-> ";
+                innerFile->registerLog() << "Criando as queries de inserção..." << "-> ";
                 time->startTimer();
                 vector<string> queryDestiny = destiny->getQuery();
                 time->endTimer();
-                innerFile << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
+                innerFile->registerLog() << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
 
-                innerFile << "Transferindo..." << "-> ";
+                innerFile->registerLog() << "Transferindo..." << "-> ";
                 time->startTimer();
                 for (auto &&queryDestiny : queryDestiny){
                     count-> incrementRows();
                     dbDestiny->execDB(queryDestiny);
                 }
                 time->endTimer();
-                innerFile << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
+                innerFile->registerLog() << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
                 if (count->getsectionRows() > 0) count->incrementTables();
              
                 count->incrementTotalRows();
-                innerFile << "Transação terminada..." << endl;
-                innerFile << "Linhas inseridas dessa query: " << count->getsectionRows() << endl;
-                innerFile << "Linha inseridas até agora: " << count->getTotalRows() << endl;
-                innerFile << "Tabelas inseridas até agora: " << count->getNumTables() << endl;
-                innerFile << "***************************************" << endl;
+                innerFile->registerLog() << "Transação terminada..." << endl;
+                innerFile->registerLog() << "Linhas inseridas dessa query: " << count->getsectionRows() << endl;
+                innerFile->registerLog() << "Linha inseridas até agora: " << count->getTotalRows() << endl;
+                innerFile->registerLog() << "Tabelas inseridas até agora: " << count->getNumTables() << endl;
+                innerFile->registerLog() << "***************************************" << endl;
                 count->resetRows();
             }
-            innerFile << "Total de tabelas Inseridas: " << count->getNumTables() << endl;
-            innerFile << "Total de linhas inseridas: " << count-> getTotalRows() << endl;
+            innerFile->registerLog() << "Total de tabelas Inseridas: " << count->getNumTables() << endl;
+            innerFile->registerLog() << "Total de linhas inseridas: " << count-> getTotalRows() << endl;
         }
         catch(const std::exception& e) {
             this->log->registerLog(e.what());
@@ -514,7 +530,10 @@ public:
 
 int main(int, char**){
 
-    daemon("/home/fernando/Área de Trabalho/Data_Transfer/dataTransf");
+    const char* dirTarget = "/home/ubuntu/data_transf";
+    // const char* dirTarget = "/home/fernando/Área de Trabalho/Data_Transfer/dataTransf"
+
+    daemon(dirTarget);
     
     while (1) {
         syslog (LOG_NOTICE, "Data_Transfer Daemon started.");
