@@ -478,6 +478,7 @@ public:
     void executer(){
         try {
             // Complexidade do algoritmo O(n²)
+            innerFile->registerLog() << "Inicio da tarefa: " << log->currentTime() << endl;
             innerFile->registerLog() << "Criando as queries de consulta..." << "-> ";
             time->startTimer();
             vector<string> queryOrigin = origin->getQuery();
@@ -487,7 +488,7 @@ public:
             for (auto &queryOrigin : queryOrigin) {
                 innerFile->registerLog() << "Query que está sendo buscada e transferida: " << queryOrigin << "-> ";
                 time->startTimer();
-                vector<DataForTransfer> dataFromDB = dbOrigin->returnExecDB(queryOrigin, "77");
+                vector<DataForTransfer> dataFromDB = dbOrigin->returnExecDB(queryOrigin, "1");
                 time->endTimer();
                 innerFile->registerLog() << "Tempo de execução: " << time->getElapsedTimeInSeconds() << "s." << endl;
 
@@ -521,6 +522,7 @@ public:
             }
             innerFile->registerLog() << "Total de tabelas Inseridas: " << count->getNumTables() << endl;
             innerFile->registerLog() << "Total de linhas inseridas: " << count-> getTotalRows() << endl;
+            innerFile->registerLog() << "Término da tarefa: " << log->currentTime() << endl;
         }
         catch(const std::exception& e) {
             this->log->registerLog(e.what());
@@ -538,13 +540,14 @@ int main(int, char**){
     while (1) {
         syslog (LOG_NOTICE, "Data_Transfer Daemon started.");
         try {
-        DBExecuter *exec = new DBExecuter();
-        exec->executer();
-        delete exec;
+            DBExecuter *exec = new DBExecuter();
+            exec->executer();
+            delete exec;
         }
         catch(const std::exception& e) {
             ;
         }
+        sleep(30);
     }
    
     syslog (LOG_NOTICE, "Data_Transfer Daemon terminated.");
