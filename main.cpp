@@ -478,7 +478,7 @@ public:
     void executer(){
         try {
             // Complexidade do algoritmo O(n²)
-            innerFile->registerLog() << "Inicio da tarefa: " << log->currentTime() << endl;
+            innerFile->registerLog() << "Inicio da tarefa: \n" << log->currentTime() << endl;
             innerFile->registerLog() << "Criando as queries de consulta..." << "-> ";
             time->startTimer();
             vector<string> queryOrigin = origin->getQuery();
@@ -522,7 +522,7 @@ public:
             }
             innerFile->registerLog() << "Total de tabelas Inseridas: " << count->getNumTables() << endl;
             innerFile->registerLog() << "Total de linhas inseridas: " << count-> getTotalRows() << endl;
-            innerFile->registerLog() << "Término da tarefa: " << log->currentTime() << endl;
+            innerFile->registerLog() << "\nTérmino da tarefa: " << log->currentTime() << endl;
         }
         catch(const std::exception& e) {
             this->log->registerLog(e.what());
@@ -533,7 +533,7 @@ public:
 int main(int, char**){
 
     const char* dirTarget = "/home/ubuntu/data_transf";
-    // const char* dirTarget = "/home/fernando/Área de Trabalho/Data_Transfer/dataTransf"
+    // const char* dirTarget = "/home/fernando/Área de Trabalho/Data_Transfer/dataTransf";
 
     daemon(dirTarget);
     
@@ -547,6 +547,7 @@ int main(int, char**){
         catch(const std::exception& e) {
             ;
         }
+        break;
         sleep(30);
     }
    
