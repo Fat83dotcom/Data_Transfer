@@ -44928,3 +44928,17 @@ Lost connection to the database server. -> Friday, 23/02/2024 20:30:25
 
 Lost connection to the database server. -> Friday, 23/02/2024 20:30:26
 
+Log Operando -> Tuesday, 27/02/2024 19:41:33
+
+Log Operando -> Tuesday, 27/02/2024 19:41:34
+
+ERROR:  relation "tabelas_horarias.26-02-2024" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Tuesday, 27/02/2024 19:41:34
+
+ERROR:  relation "tabelas_horarias.27-02-2024" does not exist
+LINE 1: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_h...
+                                                          ^
+ -> Tuesday, 27/02/2024 19:41:34
+

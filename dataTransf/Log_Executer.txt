@@ -2,3 +2,37 @@ Log Executer on fire !!
 Criando as queries de consulta...-> Tempo de execução: 0.012683s.
 Query que está sendo buscada e transferida: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_horarias"."05-03-2022";-> Tempo de execução: 0.926271s.
 Criando as queries de inserção...-> Tempo de execução: 2.00365s.
+Log Executer on fire !!
+Inicio da tarefa: Tuesday, 27/02/2024 19:46:46
+Criando as queries de consulta...-> Tempo de execução: 0.00880163s.
+Query que está sendo buscada e transferida: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_horarias"."05-03-2022";-> Tempo de execução: 0.981706s.
+Criando as queries de inserção...-> Tempo de execução: 0.948422s.
+Log Executer on fire !!
+Inicio da tarefa: Tuesday, 27/02/2024 19:49:04
+Criando as queries de consulta...-> Tempo de execução: 0.0141234s.
+Query que está sendo buscada e transferida: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_horarias"."05-03-2022";-> Tempo de execução: 0.660764s.
+Criando as queries de inserção...-> Tempo de execução: 0.707052s.
+Log Executer on fire !!
+Inicio da tarefa: Tuesday, 27/02/2024 19:50:11
+Criando as queries de consulta...-> Tempo de execução: 0.00850314s.
+Query que está sendo buscada e transferida: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_horarias"."05-03-2022";-> Tempo de execução: 0.618656s.
+Criando as queries de inserção...-> Tempo de execução: 0.875668s.
+Log Executer on fire !!
+Inicio da tarefa: Tuesday, 27/02/2024 19:55:15
+Criando as queries de consulta...-> Tempo de execução: 0.0140493s.
+Query que está sendo buscada e transferida: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_horarias"."05-03-2022";-> Tempo de execução: 0.812647s.
+Criando as queries de inserção...-> Tempo de execução: 0.723695s.
+Log Executer on fire !!
+Inicio da tarefa: Tuesday, 27/02/2024 19:59:17
+Criando as queries de consulta...-> Tempo de execução: 3.8118e-05s.
+Query que está sendo buscada e transferida: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_horarias"."20-02-2024";-> Tempo de execução: 2.53273s.
+Criando as queries de inserção...-> Tempo de execução: 3.33655s.
+Transferindo...-> Tempo de execução: 949.172s.
+Transação terminada...
+Linhas inseridas dessa query: 77715
+Linha inseridas até agora: 77715
+Tabelas inseridas até agora: 1
+***************************************
+Total de tabelas Inseridas: 1
+Total de linhas inseridas: 77715
+Término da tarefa: Tuesday, 27/02/2024 20:15:13

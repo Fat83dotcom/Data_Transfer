@@ -13,8 +13,8 @@ def gerar_sequencia_de_datas(data_inicial, data_final):
 
 
 # Data inicial e final da sequência
-data_inicial = datetime(2022, 3, 5)
-data_final = datetime(2024, 2, 29)
+data_inicial = datetime(2024, 2, 20)
+data_final = datetime(2024, 2, 20)
 
 # Gerar a sequência de datas
 sequencia_datas = gerar_sequencia_de_datas(data_inicial, data_final)

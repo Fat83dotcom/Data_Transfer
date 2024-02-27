@@ -1,0 +1,22 @@
+Log Executer on fire !!
+Inicio da tarefa: Tuesday, 27/02/2024 19:41:34
+Criando as queries de consulta...-> Tempo de execução: 5.0402e-05s.
+Query que está sendo buscada e transferida: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_horarias"."26-02-2024";-> Tempo de execução: 0.0556213s.
+Criando as queries de inserção...-> Tempo de execução: 6.099e-06s.
+Transferindo...-> Tempo de execução: 1.002e-06s.
+Transação terminada...
+Linhas inseridas dessa query: 0
+Linha inseridas até agora: 0
+Tabelas inseridas até agora: 0
+***************************************
+Query que está sendo buscada e transferida: SELECT data_hora, temp_ext, umidade, pressao FROM "tabelas_horarias"."27-02-2024";-> Tempo de execução: 0.0541548s.
+Criando as queries de inserção...-> Tempo de execução: 6.019e-06s.
+Transferindo...-> Tempo de execução: 1.042e-06s.
+Transação terminada...
+Linhas inseridas dessa query: 0
+Linha inseridas até agora: 0
+Tabelas inseridas até agora: 0
+***************************************
+Total de tabelas Inseridas: 0
+Total de linhas inseridas: 0
+Término da tarefa: Tuesday, 27/02/2024 19:41:34
